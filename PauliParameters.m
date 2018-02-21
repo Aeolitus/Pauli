@@ -12,7 +12,7 @@ classdef PauliParameters < handle
         % Path to the folder containing the CameraControl images
         folderpath = NaN;
         
-        % Array of structs with field "name" and cell array "values" 
+        % Cell Array of PauliLoopvars
         loopvars = NaN;
         
         % Cell Array of filenames to use
@@ -20,6 +20,15 @@ classdef PauliParameters < handle
         
         % Cell Array of possible image names
         images = NaN;
+        
+        % Cell Array of image names to be loaded. All others are ignored.
+        imagesToLoad = NaN;
+        
+        % Cell Array of image names to be saved. All others are discarded.
+        imagesToSave = NaN;
+        
+        % Array with the amount of pixels to crop. Left, Right, Top, Bottom
+        crop = NaN;
     end
     methods
         function obj = PauliParameters(configfile)

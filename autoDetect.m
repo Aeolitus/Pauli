@@ -1,12 +1,12 @@
-function outp = autoDetect(foldername, PauliP)
+function outp = autoDetect(PauliP, foldername)
     % AUTODETECT    Automatically detect the loop variables and their values.
     %     This function goes over all the png files in the folder "foldername".
     %     First, from the first entry, the names of the loopvars are extracted 
     %     some regexp. Then, all files are looped over and the different
     %     possible values for the loopvars are recorded. 
-    import *;
     images = {};
     filesList = {};
+    loopvars = {};
     
     if PauliP.verbose == true
         textprogressbar('RESET',1);
@@ -51,16 +51,12 @@ function outp = autoDetect(foldername, PauliP)
         end
     end
     regexpOut = regexpOut{1};
-
-    % Create the structs containing varname and the (so far empty) array of
-    % values. 
+    % Create the loopvar objects and assign names
     for i=1:numel(regexpOut)
-        temp = struct();
-        temp.name = regexpOut(i);
-        temp.values = {};
-        loopvars(i) = temp;
+        temp = PauliLoopvar;
+        temp.name = regexpOut{i};
+        loopvars{i} = temp;
     end
-    
     %% Make the full file list given the variable lists above
 
     if PauliP.verbose == true
@@ -68,13 +64,13 @@ function outp = autoDetect(foldername, PauliP)
     end
         
     % Define the regular Expression
-    rE = '([a-zA-Z]+)'; % Image Name
+    rE = '([a-zA-Z]*)'; % Image Name
     for i=1:numel(loopvars) % Name and Capture Groups for the Loopvars
-        rE = [rE '_' loopvars(i).name '_([0-9e.-]+)'];
+        rE = [rE '_' loopvars{i}.name '_([0-9e.-]+)'];
     end
     rE = [rE '(?:_[0-9]+){0,1}']; % Continuity padding
     rE = [rE '.png'];
-
+    
     % Loop over all files and extract values and save filename if it matches
     for i=1:numel(folderContent)
         if PauliP.verbose == true
@@ -88,17 +84,17 @@ function outp = autoDetect(foldername, PauliP)
         regexpOut = regexpOut{1};
 
         % Image Name
-        if (~any(strcmp(images,regexpOut(1))))
-            images{end+1} = regexpOut(1);
+        if (~any(strcmp(images,regexpOut{1})))
+            images{end+1} = regexpOut{1};
         end
 
         % Loopvar Values
         for ii = 2:numel(loopvars)+1
-            if (~any(strcmp(loopvars(ii-1).values,regexpOut(ii))))
-                loopvars(ii-1).values{end+1} = regexpOut(ii);
+            if (~any(strcmp(loopvars{ii-1}.values,regexpOut{ii})))
+                loopvars{ii-1}.values{end+1} = regexpOut{ii};
             end
         end
-
+        
         % Add file to files list
         filesList{end+1} = folderContent(i);
 
