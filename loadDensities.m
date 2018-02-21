@@ -1,4 +1,4 @@
-function outp = loadDensities(pauliObj)
+function loadDensities(pauliObj)
     % LOADDENSITIES    Load the images requested and convert to densities
     %     This function will, for each combination of loopvars, load all
     %     the images defined in the parameters object. When all can be
@@ -90,7 +90,7 @@ function outp = loadDensities(pauliObj)
         if ~flag
             for i=1:numel(pauliObj.parameters.imagesToSave)
                 % Hacky, but makes sure we get the right entry 
-                eval(['pauliObj.data.image{' cellIndex '}.('            ...
+                evalc(['pauliObj.data.image{' cellIndex '}.('           ...
                     'pauliObj.parameters.imagesToSave{i}) = '           ...
                     'imgLoaded.(pauliObj.parameters.'                   ...
                     'imagesToSave{i})']);
