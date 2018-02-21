@@ -62,5 +62,13 @@ classdef Pauli < handle
                 autoDetect(obj.parameters, folderpath);
             end
         end
+        
+        function createDensities(obj)
+            % createDensities    Load images and convert them to densities
+            %    This method calls the external loadDensities method, which
+            %    goes and loads all the images defined via the
+            %    PauliParameters and converts them to densities.
+            loadDensities(obj);
+        end
     end
 end
