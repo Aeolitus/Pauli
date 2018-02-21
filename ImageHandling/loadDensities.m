@@ -82,12 +82,15 @@ function loadDensities(pauliObj)
         % If all images were loaded, convert them to a density and continue
         % to the next set of loopvars
         if ~flag
-            %ret = convertToDensity(pauliObj, imgLoaded);
+            % Pretty hacky section. Not as nice as could be done
+            evalc(['ret = ' pauliObj.parameters.                        ...
+                convertToDensityFunctionName '(pauliObj, imgLoaded);']);
+            evalc(['pauliObj.data.density{' cellIndex '} = ret;']);
             convertedCounter = convertedCounter + 1;
         end
         
         % Save the images the user requested to be saved
-        if ~flag
+        if ~flag && ~isnan(pauliObj.parameters.imagesToSave)
             for i=1:numel(pauliObj.parameters.imagesToSave)
                 % Hacky, but makes sure we get the right entry 
                 evalc(['pauliObj.data.image{' cellIndex '}.('           ...

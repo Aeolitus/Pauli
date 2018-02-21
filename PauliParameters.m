@@ -29,6 +29,12 @@ classdef PauliParameters < handle
         
         % Array with the amount of pixels to crop. Left, Right, Top, Bottom
         crop = NaN;
+        
+        % Name of the function to be called for conversion to density
+        convertToDensityFunctionName = NaN;
+        
+        % Struct of user defined parameters that can be whatever is needed
+        user = struct();
     end
     methods
         function obj = PauliParameters(configfile)
