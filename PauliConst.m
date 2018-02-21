@@ -11,6 +11,8 @@ classdef PauliConst < handle
         lightspeed = 2.99792458e8;          % Same
         g = 9.80665;                        % Gravitational acceleration
         e = 1.6021766e-19;                  % Elementary charge
+    end
+    properties
         m = struct();                       % Atomic masses
         d2 = struct();                      % Atomic D2 lines
         d1 = struct();                      % Atomic D1 lines
