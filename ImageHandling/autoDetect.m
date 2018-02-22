@@ -92,6 +92,16 @@ function outp = autoDetect(PauliP, foldername)
 
     end
     
+    % Sort Loopvars
+    for i=1:numel(loopvars)
+        posVec = zeros(1,numel(loopvars{i}.values)); 
+        for j=1:numel(loopvars{i}.values)
+            posVec(j) = str2double(loopvars{i}.values{j});
+        end
+        [~, indices] = sort(posVec, 'ascend');
+        loopvars{i}.values = loopvars{i}.values(indices);
+    end        
+    
     if PauliP.verbose == true
         textprogressbar(' ... done!');
     

@@ -57,12 +57,12 @@ classdef Pauli < handle
                         % one should be run
                         choice = questdlg(['This folder was already evaluated. ' ...
                             'Would you like to load the old evaluation or to redo it?'], ...
-                            'Pauli-Savefile found', 'Load', ...
-                            'Redo','Load');
+                            'Pauli-Savefile found', 'Load Old Evaluation', ...
+                            'Perform New Evaluation','Load Old Evaluation');
                         switch choice
-                            case 'Load'
+                            case 'Load Old Evaluation'
                                 loadF = fullfile(folderpath, 'savedPauliState.pauli');
-                            case 'Redo'
+                            case 'Perform New Evaluation'
                                 analyze = folderpath;
                         end
                     else
@@ -115,11 +115,46 @@ classdef Pauli < handle
             %    is currently being evaluated. If no folder is set, the
             %    user is prompted to select a folder and filename.
             if ~isnan(PauliObject.parameters.folderpath)
-                PauliObject.saveConfig(fullfile(PauliObject.parameters. ...
-                    folderpath,'savedPauliState.pauli'));
+                % A folder was analyzed. Save this object there.
+                path = PauliObject.parameters.folderpath;
+                file = 'savedPauliState.pauli';
             else
+                % Ask the user where to save it.
                 [file,path] = uiputfile('Pauli-Files (*.pauli)','Save Pauli-Object as...');
-                PauliObject.saveConfig(fullfile(path,file));
+            end
+            
+            combined = fullfile(path,file);
+            if exist(combined, 'file') == 2
+                % A file would be overwritten! Ask what to do
+                choice = questdlg(['A saved Pauli Object already exists! '...
+                    'Would you like to overwrite it, rename the old one, or ' ...
+                    'save this one under a different name?'], ...
+                            'Pauli-Savefile already exists', 'Overwrite', ...
+                            'Rename old','Save under a different name', 'Rename old');
+                switch choice
+                    case 'Overwrite'
+                        % Overwrite away
+                        PauliObject.saveConfig(combined);
+                    case 'Rename old'
+                        % Rename the old file
+                        movefile(combined, [combined(1:end-6) '_old.pauli']);
+                        PauliObject.saveConfig(combined);
+                    case 'Save under a different name'
+                        % Ask for a different name
+                        [file2,path2] = uiputfile('Pauli-Files (*.pauli)','Save Pauli-Object as...');
+                        combined2 = fullfile(path2,file2);
+                        if strcmp(combined2,combined) == 1
+                            % If you select the same twice, its hopeless
+                            disp('Same file selected again - terminating.');
+                            return;
+                        end
+                        if exist(combined2, 'file') == 2
+                            % Again trying to overwrite stuff...
+                            disp('This file also already exists - terminating.');
+                            return;
+                        end
+                        PauliObject.saveConfig(combined2);
+                end
             end
         end
         
