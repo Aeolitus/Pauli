@@ -33,7 +33,7 @@ function outp = autoDetect(PauliP, foldername)
     % for any amount of the term in curly brackets. 
     % We start with the maximum number of variables possible and decrease the
     % number until we get a match. That match then defines the loopvars.
-    for numberofVariables = length(find(folderContent{1}=='_'))/2:-1:0
+    for numberofVariables = floor(length(find(folderContent{1}=='_'))/2):-1:0
         rE = ['(?:[a-zA-Z]+)' ...
             repmat('_([a-zA-Z_]+)_(?:[0-9e.-]+)',1,numberofVariables) ...
             '(?:_[0-9]+){0,1}.png'];

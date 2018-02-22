@@ -155,6 +155,8 @@ classdef Pauli < handle
                         end
                         PauliObject.saveConfig(combined2);
                 end
+            else
+                PauliObject.saveConfig(combined);
             end
         end
         
