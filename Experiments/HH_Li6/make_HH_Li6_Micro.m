@@ -1,5 +1,3 @@
-clear;
-
 pauliObj = Pauli;
 
 % Set parameters for this camera (Micro)
@@ -29,3 +27,6 @@ pauliObj.constants.user.resonance_12 = 832.18; %G
 pauliObj.constants.user.resonance_width_12 = -262.3; %G
 pauliObj.constants.user.a_bg_12 = -1582*pauliObj.constants.a0; %m
 pauliObj.constants.user.sigma = 3*pauliObj.constants.user.lambda^2/2/pi;
+
+% Save this object for future use
+pauliObj.saveConfig('Experiments\HH_Li6\Micro');

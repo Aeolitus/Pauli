@@ -13,13 +13,16 @@ classdef Pauli < handle
         data;
     end
     methods
-        function obj = Pauli(configfile)
+        function obj = Pauli(configfile, folderpath)
             % Pauli    Constructor creating the pauli object and subobjects
             %     When called without an argument, creates an empty pauli
             %     object. When a .pauliP file is passed, the parameters
             %     file is automatically loaded from that file. When a
             %     .pauli file is passed, the entire object is automatically
             %     loaded from that file. 
+            %     If a config file and a folderpath are given, the folder
+            %     is automatically scanned for files and the images are
+            %     loaded and converted to densities. 
             obj.parameters = PauliParameters;
             obj.constants = PauliConst;
             obj.data = PauliData;
@@ -36,6 +39,10 @@ classdef Pauli < handle
                         obj = loaded.PauliObject;
                     end
                 end
+            end
+            if nargin > 1
+                obj.autoDetect(folderpath);
+                obj.createDensities;
             end
         end
         
