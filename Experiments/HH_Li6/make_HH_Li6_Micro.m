@@ -13,11 +13,9 @@ pauliObj.parameters.user.NA = 0.61;
 pauliObj.parameters.user.Magnification = 30.8;
 pauliObj.parameters.user.Csat = 31.58;
 pauliObj.parameters.user.PixelSize = 16e-6;
-pauliObj.parameters.user.Binning = 2;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;
 pauliObj.parameters.user.GperA = 7.92;
-pauliObj.parameters.user.imagingField = 90*pauliObj.parameters.user.GperA;
 
 % Set constants for this atomic species (Li6)
 pauliObj.constants.user.m = 9.9883e-27; %kg

@@ -8,7 +8,7 @@ classdef PauliData < handle
         % Cell array of structs containing all images that were saved
         image;
         
-        % Struct containing all variables extracted from the PNGs XML
+        % Cell array of strings with the PNGs XML text
         xml;
     end
 end

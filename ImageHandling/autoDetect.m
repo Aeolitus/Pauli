@@ -13,10 +13,6 @@ function outp = autoDetect(PauliP, foldername)
     end
     
     %% Extract a full list of filenames in the directory
-
-    if PauliP.verbose == true
-        disp('Loading folder contents...');
-    end
     
     % Get filenames for the given folder 
     input = dir(foldername);
@@ -28,10 +24,6 @@ function outp = autoDetect(PauliP, foldername)
     end
     
     %% Get Loopvar names from the first png file in the folder
-
-    if PauliP.verbose == true
-        disp('Reading Loopvar Names...');
-    end
     
     % Conservative Approach: Maximum Number of Loopvars is the number of
     % underscores in the file name divided by two (name_varname_value.png).

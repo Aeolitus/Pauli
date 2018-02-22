@@ -10,7 +10,7 @@ function loadDensities(pauliObj)
         textprogressbar('RESET',1);
     end
     
-    %% Hacky way of initialising the densities cell array
+    %% Hacky way of initialising the cell arrays
     numFields = 1;
     command = '';
     for i=1:numel(pauliObj.parameters.loopvars)
@@ -24,6 +24,7 @@ function loadDensities(pauliObj)
     if numel(pauliObj.parameters.imagesToSave) > 0
         eval(['pauliObj.data.image{' command]);
     end
+    eval(['pauliObj.data.xml{' command]);
     
     %% Main loop loading the images and converting them to densities
     index = numel(pauliObj.parameters.loopvars);
@@ -40,6 +41,7 @@ function loadDensities(pauliObj)
         
         % Struct later containing all the images that were loaded
         imgLoaded = struct();
+        xmlStruct = struct();
         
         % Create the loop variable part of the filename and the cell index
         variableStr = '';
@@ -70,6 +72,13 @@ function loadDensities(pauliObj)
                     pauliObj.parameters.crop(4), ...
                     pauliObj.parameters.crop(1):size(temp,2)-...
                     pauliObj.parameters.crop(2));
+                % Extract XML
+                if i==1
+                    ImgInfo = imfinfo(filenameFull);
+                    XmlText = strrep(ImgInfo.OtherText{3,2}, ...
+                        'ISO8859-1', 'ISO-8859-1');
+                    evalc(['pauliObj.data.xml{' cellIndex '}=XmlText;']);
+                end
             else
                 flag = true;
                 if pauliObj.parameters.verbose
@@ -84,13 +93,14 @@ function loadDensities(pauliObj)
         if ~flag
             % Pretty hacky section. Not as nice as could be done
             evalc(['ret = ' pauliObj.parameters.                        ...
-                convertToDensityFunctionName '(pauliObj, imgLoaded);']);
+                convertToDensityFunctionName                            ...
+                '(pauliObj, imgLoaded, XmlText);']);
             evalc(['pauliObj.data.density{' cellIndex '} = ret;']);
             convertedCounter = convertedCounter + 1;
         end
         
         % Save the images the user requested to be saved
-        if ~flag && ~isnan(pauliObj.parameters.imagesToSave)
+        if ~flag && iscell(pauliObj.parameters.imagesToSave)
             for i=1:numel(pauliObj.parameters.imagesToSave)
                 % Hacky, but makes sure we get the right entry 
                 evalc(['pauliObj.data.image{' cellIndex '}.('           ...
