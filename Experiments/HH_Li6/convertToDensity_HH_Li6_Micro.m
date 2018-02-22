@@ -122,8 +122,8 @@ function density_image =                                                ...
     LinTerm = Bright - Atoms;
     LinTerm = LinTerm / pauliObj.constants.user.sigma / beta / (1 - SA);
     LinTerm = LinTerm / (pauliObj.parameters.user.Csat/4);
-    LinTerm = LinTerm / pauliObj.parameters.user.Binning^2;
-    LinTerm = LinTerm / pauliObj.parameters.user.ImgIlluminationTime * 1e6; 
+    LinTerm = LinTerm / (pauliObj.parameters.user.Binning^2);
+    LinTerm = LinTerm / pauliObj.parameters.user.ImgIlluminationTime / 1e6; 
     
     % Create Logarithmic Term
     LogTerm = log(Atoms ./ Bright);
