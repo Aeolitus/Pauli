@@ -90,12 +90,12 @@ classdef Pauli < handle
                 obj.autoDetect(folderpath);
                 obj.createDensities;
                 if obj.parameters.verbose
+                    toc;
+                end
+                if obj.parameters.verbose
                     disp('Saving Pauli Object to Folder...');
                 end
                 obj.save;
-                if obj.parameters.verbose
-                    toc;
-                end
             end     
         end % End Constructor
         
