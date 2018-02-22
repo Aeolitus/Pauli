@@ -4,7 +4,6 @@ pauliObj = Pauli;
 pauliObj.parameters.verbose = 1;
 pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM'};
 pauliObj.parameters.crop = [1 1 2 1];
-pauliObj.parameters.convertToDensityFunctionName = 'convertToDensity_HH_Li6_Micro';
 
 % Set Parameters related to the current state of the setup
 pauliObj.parameters.user.NA = 0.61;
@@ -28,5 +27,8 @@ pauliObj.constants.user.resonance_width_12 = -262.3; %G
 pauliObj.constants.user.a_bg_12 = -1582*pauliObj.constants.a0; %m
 pauliObj.constants.user.sigma = 3*pauliObj.constants.user.lambda^2/2/pi;
 
-% Save this object for future use
+% Internal, dont modify
+pauliObj.parameters.convertToDensityFunctionName = 'convertToDensity_HH_Li6_Micro';
 pauliObj.saveConfig('Experiments\HH_Li6\Micro');
+
+clear pauliObj;

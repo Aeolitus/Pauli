@@ -10,5 +10,8 @@ classdef PauliData < handle
         
         % Cell array of strings with the PNGs XML text
         xml;
+        
+        % Struct with any additional data the user generates
+        user;
     end
 end
