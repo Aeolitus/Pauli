@@ -52,7 +52,7 @@ function outp = autoDetect(PauliP, foldername)
     %% Make the full file list given the variable lists above
 
     if PauliP.verbose == true
-            textprogressbar('Automatically detecting loopvar values... ');
+            textprogressbar('Autodetecting loopvar values...  ');
     end
         
     % Define the regular Expression
@@ -94,8 +94,17 @@ function outp = autoDetect(PauliP, foldername)
     
     if PauliP.verbose == true
         textprogressbar(' ... done!');
-    end
     
+        disp('Detected Loopvars: ');
+        for i=1:numel(loopvars)
+            valStr = '[';
+            for j=1:numel(loopvars{i}.values)
+                valStr = [valStr loopvars{i}.values{j} ','];
+            end
+            valStr = [valStr(1:end-1) ']'];
+            disp([loopvars{i}.name ' -> ' valStr]);
+        end        
+    end
     %% Write results to PauliParameters Object
 
     PauliP.folderpath = foldername;

@@ -29,7 +29,7 @@ function loadDensities(pauliObj)
     %% Main loop loading the images and converting them to densities
     index = numel(pauliObj.parameters.loopvars);
     if pauliObj.parameters.verbose == true
-        textprogressbar('Loading images & converting to densities... ');
+        textprogressbar('Loading and converting images... ');
     end
     
     % Flags and variables for output

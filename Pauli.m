@@ -41,8 +41,14 @@ classdef Pauli < handle
                 end
             end
             if nargin > 1
+                if obj.parameters.verbose
+                    tic;
+                end
                 obj.autoDetect(folderpath);
                 obj.createDensities;
+                if obj.parameters.verbose
+                    toc;
+                end
             end
         end
         

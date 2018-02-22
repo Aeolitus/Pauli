@@ -28,7 +28,7 @@ if reset
 end
 % Vizualization parameters
 strPercentageLength = 7;   %   Length of percentage string (must be >5)
-strDotsMaximum      = 10;   %   The total number of dots in a progress bar
+strDotsMaximum      = 25;   %   The total number of dots in a progress bar
 
 %% Main 
 
