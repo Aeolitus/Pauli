@@ -130,4 +130,10 @@ function density_image =                                                ...
     LogTerm = LogTerm / pauliObj.constants.user.sigma / beta / (1 - SA);
     
     density_image = LinTerm - LogTerm;
+    
+    if pauliObj.parameters.user.dirtyHack
+        density_image(isnan(density_image)) = 0;
+        density_image(isinf(density_image)) = 0;
+        density_image = real(density_image);
+    end
 end

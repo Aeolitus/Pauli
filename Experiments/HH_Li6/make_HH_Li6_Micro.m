@@ -13,6 +13,7 @@ pauliObj.parameters.user.PixelSize = 16e-6;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;
 pauliObj.parameters.user.GperA = 7.92;
+pauliObj.parameters.user.dirtyHack = 1;
 
 % Set constants for this atomic species (Li6)
 pauliObj.constants.user.m = 9.9883e-27; %kg
