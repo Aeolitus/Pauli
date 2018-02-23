@@ -14,16 +14,16 @@ The structure of the Pauli object is defined by the classes found in the main fo
 ```
 Pauli (Main Object)
 |
-|-	PauliConstants (Physical Constants)
+|-	constants (PauliConstants object containing Physical Constants)
 |	|-	user (struct for all user defined constants, such as atomic masses of the element used) 
 |
-|-	PauliData (Data loaded from Images)
+|-	data (PauliData object containing data loaded from Images)
 |	|-	images (All images the user requested to be saved in matrix form)
 |	|-	density (Cell array of density matrices)
 |	|- 	xml (Cell array of extracted XML in text form)
 |	|- 	user (struct for all user defined data)
 |
-|-	PauliParameters (Parameters defining the operation of Pauli defined by the user)
+|-	parameters (PauliParameters object containing parameters defining the operation of Pauli defined by the user)
 	|-	verbose (flag defining whether output is written to the console)
 	|-	loopvars (loopvars used for this run in ExpControl)
 	|-	files (Cell array of all filenames found in the folder)
