@@ -35,12 +35,15 @@ function outp = autoDetect(PauliP, foldername)
     % number until we get a match. That match then defines the loopvars.
     for numberofVariables = floor(length(find(folderContent{1}=='_'))/2):-1:0
         rE = ['(?:[a-zA-Z]+)' ...
-            repmat('_([a-zA-Z][0-9a-zA-Z_]*?)_(?:[0-9e.-]+)',1,numberofVariables) ...
+            repmat('_([a-zA-Z][0-9a-zA-Z_]*?)_(?:[0-9eE.-]+)',1,numberofVariables) ...
             '(?:_[0-9]+){0,1}.png'];
         regexpOut = regexp(folderContent{1}, rE,'tokens');
         if ~isempty(regexpOut) 
             break;
         end
+    end
+    if isempty(regexpOut)
+        error('Could not automatically detect loopvars!');
     end
     regexpOut = regexpOut{1};
     % Create the loopvar objects and assign names
@@ -58,7 +61,7 @@ function outp = autoDetect(PauliP, foldername)
     % Define the regular Expression
     rE = '([a-zA-Z]*)'; % Image Name
     for i=1:numel(loopvars) % Name and Capture Groups for the Loopvars
-        rE = [rE '_' loopvars{i}.name '_([0-9e.-]+)'];
+        rE = [rE '_' loopvars{i}.name '_([0-9eE.-]+)'];
     end
     rE = [rE '(?:_[0-9]+){0,1}']; % Continuity padding
     rE = [rE '.png'];
