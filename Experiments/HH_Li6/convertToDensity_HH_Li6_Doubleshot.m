@@ -1,5 +1,5 @@
 function density_image =                                                ...
-    convertToDensity_HH_Li6_Zyla(pauliObj, imagesStruct, XmlStr)
+    convertToDensity_HH_Li6_Doubleshot(pauliObj, imagesStruct, XmlStr)
     % CONVERTTODENSITY_HH_LI6_Zyla    
     %   This method is for now just a copy of the Micro one. That is not
     %   how this should stay!
@@ -65,11 +65,11 @@ function density_image =                                                ...
         if ~isnan(High_Curvature_Q) && High_Curvature_Q
             pauliObj.parameters.user.imagingfield =                     ...
                 FB_I_Img*pauliObj.parameters.user.GperA -               ...
-                HH_I_Img*pauliObj.parameters.user.GperA/1.544;
+                HH_I_Img*pauliObj.parameters.user.GperA/1.5367;
         else
             pauliObj.parameters.user.imagingfield =                     ...
                 FB_I_Img*pauliObj.parameters.user.GperA +               ...
-                HH_I_Img*pauliObj.parameters.user.GperA/1.544;
+                HH_I_Img*pauliObj.parameters.user.GperA/1.5367;
         end
     end
     
@@ -100,8 +100,8 @@ function density_image =                                                ...
     end
     
     % Subtract Dark Images
-    Bright = imagesStruct.BrightZ - imagesStruct.DarkZ;
-    Atoms = imagesStruct.AtomsZ - imagesStruct.DarkZ;
+    Bright = imagesStruct.BrightD - imagesStruct.DarkBrightD;
+    Atoms = imagesStruct.AtomsD - imagesStruct.DarkAtomsD;
     
     if pauliObj.parameters.user.ImgIlluminationTime ~= 5e-6
         disp(['The ImgIlluminationTime extracted from the XML is '      ...
