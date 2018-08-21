@@ -1,4 +1,4 @@
-function pauliObj = make_HH_Li6_Zyla()
+function pauliObj = make_HH_Li6_Doubleshot()
 % make_HH_Li6_Zyla    Experiment and Mode specific definition of parameters
 %    This is the place where you define all the parameters and constants
 %    specific to your Experiment and Mode. The values below are just listed
@@ -13,20 +13,20 @@ pauliObj = Pauli;
 % Output to console on
 pauliObj.parameters.verbose = 1; 
 % Shot Names to load from file system
-pauliObj.parameters.imagesToLoad = {'AtomsZ', 'BrightZ', 'DarkZ'}; 
+pauliObj.parameters.imagesToLoad = {'AtomsD', 'BrightD', 'DarkAtomsD', 'DarkBrightD'}; 
 % Shot Names to keep after converting to density
-pauliObj.parameters.imagesToSave = {'BrightZ'};
+pauliObj.parameters.imagesToSave = {};
 % How many pixels to crop from the images [Left, Right, Top, Bottom]
 pauliObj.parameters.crop = [0 0 0 0];
 
 %% Set user parameters related to the current state of the setup
 pauliObj.parameters.user.NA = 0.61;
 pauliObj.parameters.user.Magnification = 30.8;
-pauliObj.parameters.user.Csat = 81.6261;
+pauliObj.parameters.user.Csat = 1250;
 pauliObj.parameters.user.PixelSize = 6.5e-6;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;
-pauliObj.parameters.user.GperA = 7.92;
+pauliObj.parameters.user.GperA = 7.8444;
 pauliObj.parameters.user.dirtyHack = 1;
 
 %% Set user constants for this atomic species (In this example: Li6)
@@ -43,7 +43,7 @@ pauliObj.constants.user.a_bg_12 = -1582*pauliObj.constants.a0; %m
 pauliObj.constants.user.sigma = 3*pauliObj.constants.user.lambda^2/2/pi;
 
 %% Internal Use, please dont modify
-pauliObj.parameters.convertToDensityFunctionName = 'convertToDensity_HH_Li6_Zyla';
+pauliObj.parameters.convertToDensityFunctionName = 'convertToDensity_HH_Li6_Doubleshot';
 if nargout == 0
-    pauliObj.saveConfig('Experiments\HH_Li6\Zyla');
+    pauliObj.saveConfig('Experiments\HH_Li6\Doubleshot.pauli');
 end
