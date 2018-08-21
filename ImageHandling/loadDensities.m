@@ -20,7 +20,6 @@ function loadDensities(pauliObj)
     end
     command = command(1:end-1);
     command = [command '} = [];'];
-    disp(command);
     eval(['pauliObj.data.density{' command]);
     if numel(pauliObj.parameters.imagesToSave) > 0
         eval(['pauliObj.data.image{' command]);
