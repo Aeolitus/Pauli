@@ -7,12 +7,12 @@ pauliObj.parameters.crop = [0 0 0 0];
 
 % Set Parameters related to the current state of the setup
 pauliObj.parameters.user.NA = 0.61;
-pauliObj.parameters.user.Magnification = 14.6;
-pauliObj.parameters.user.Csat = 2.62*31.58;
+pauliObj.parameters.user.Magnification = 30.8;
+pauliObj.parameters.user.Csat = 31.58;
 pauliObj.parameters.user.PixelSize = 16e-6;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;
-pauliObj.parameters.user.GperA = 7.8444;
+pauliObj.parameters.user.GperA = 7.92;
 pauliObj.parameters.user.dirtyHack = 1;
 
 % Set constants for this atomic species (Li6)
@@ -30,6 +30,6 @@ pauliObj.constants.user.sigma = 3*pauliObj.constants.user.lambda^2/2/pi;
 
 % Internal, dont modify
 pauliObj.parameters.convertToDensityFunctionName = 'convertToDensity_HH_Li6_Micro';
-pauliObj.saveConfig('Experiments\HH_Li6\Micro.pauli');
+pauliObj.saveConfig('Experiments\HH_Li6\Micro_Old.pauli');
 
 clear pauliObj;
