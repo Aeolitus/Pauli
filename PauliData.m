@@ -5,6 +5,10 @@ classdef PauliData < handle
         % Cell array containing the calculated densities
         density;
         
+        % Cell array containing the densities where a dimension has been
+        % averaged together
+        averaged;
+        
         % Cell array of structs containing all images that were saved
         image;
         

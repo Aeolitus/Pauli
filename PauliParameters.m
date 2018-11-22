@@ -33,6 +33,9 @@ classdef PauliParameters < handle
         % Name of the function to be called for conversion to density
         convertToDensityFunctionName = NaN;
         
+        % Averaged loopvar, if applicable
+        averagedLoopvar = NaN;
+        
         % Struct of user defined parameters that can be whatever is needed
         user = struct();
     end

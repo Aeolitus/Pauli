@@ -181,5 +181,22 @@ classdef Pauli < handle
             %    PauliParameters and converts them to densities.
             loadDensities(obj);
         end
+        
+        function average(obj, loopvar, filterfunction)
+                % average   Automatically averages together images 
+                %     Calls the external averageLoopvar function, averaging
+                %     the loopvar given together. loopvar is the index or
+                %     the name of the loopvar. filterfunction is an
+                %     optional filtering function that returns true when
+                %     passed an image that should be averaged and false
+                %     otherwise. 
+                if nargin < 3
+                    filterfunction = @(~)true;
+                end
+                if nargin < 2
+                    loopvar = 'i';
+                end
+                averageLoopvar(obj, loopvar, filterfunction);
+        end
     end
 end
