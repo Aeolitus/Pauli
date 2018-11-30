@@ -62,7 +62,11 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction)
     
     % Cleanup and reshape back to original shape minus averaged dimension
     clear densTemp;
-    averaged = reshape(avgTemp, sizes(1:end-1));
+    if (numel(sizes(1:end-1))>1)
+        averaged = reshape(avgTemp, sizes(1:end-1));
+    else
+        averaged = squeeze(avgTemp);
+    end
     clear avgTemp;
     pauliObj.data.averaged = averaged;
     pauliObj.parameters.averagedLoopvar = loopvar;

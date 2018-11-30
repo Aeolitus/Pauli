@@ -65,7 +65,15 @@ function loadDensities(pauliObj)
             filenameFull = [pauliObj.parameters.folderpath '\'  filename];
             if exist(filenameFull, 'file') == 2
                 % Load Image
-                temp = double(imread(filenameFull));
+                try
+                    temp = double(imread(filenameFull));
+                catch
+                    flag = true;
+                    if pauliObj.parameters.verbose
+                        imagesNotFound{end+1} = [filename ' - Error when loading PNG'];
+                    end
+                    break;
+                end
                 % Crop Image and save
                 imgLoaded.(pauliObj.parameters.imagesToLoad{i}) = ...
                     temp(1+pauliObj.parameters.crop(3):size(temp,1)-...

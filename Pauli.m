@@ -106,7 +106,7 @@ classdef Pauli < handle
             if strcmpi(filename(end-5:end),'.pauli') ~= 1
                 filename = [filename '.pauli'];
             end
-            save(filename,'PauliObject');
+            save(filename,'-v7.3','PauliObject');
         end
         
         function save(PauliObject)
