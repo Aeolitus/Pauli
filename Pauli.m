@@ -174,12 +174,15 @@ classdef Pauli < handle
             end
         end
         
-        function createDensities(obj)
+        function createDensities(obj, loadOnlyNew)
             % createDensities    Load images and convert them to densities
             %    This method calls the external loadDensities method, which
             %    goes and loads all the images defined via the
             %    PauliParameters and converts them to densities.
-            loadDensities(obj);
+            if nargin < 2
+                loadOnlyNew = 0;
+            end
+            loadDensities(obj, loadOnlyNew);
         end
         
         function average(obj, loopvar, filterfunction)

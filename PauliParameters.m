@@ -18,6 +18,9 @@ classdef PauliParameters < handle
         % Cell Array of filenames to use
         files = NaN;
         
+        % Cell Array of files loaded so far
+        filesLoaded = NaN;
+        
         % Cell Array of possible image names
         images = NaN;
         
