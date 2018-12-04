@@ -24,6 +24,14 @@ classdef PauliLoopvar < handle
             % VALUE    Returns the current value of this loopvar
             ret = obj.values{obj.currentIndex};
         end
+        
+        function ret = getNumeric(obj)
+            % GETNUMERIC    Returns a vector with the loopvar values
+            ret = zeros(1,numel(obj.values));
+            for i=1:numel(obj.values)
+                ret(i) = str2double(obj.values{i});
+            end
+        end
     end
     
 end
