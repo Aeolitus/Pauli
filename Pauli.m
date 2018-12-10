@@ -185,7 +185,7 @@ classdef Pauli < handle
             loadDensities(obj, loadOnlyNew);
         end
         
-        function average(obj, loopvar, filterfunction)
+        function average(obj, loopvar, filterfunction, data)
                 % average   Automatically averages together images 
                 %     Calls the external averageLoopvar function, averaging
                 %     the loopvar given together. loopvar is the index or
@@ -193,13 +193,50 @@ classdef Pauli < handle
                 %     optional filtering function that returns true when
                 %     passed an image that should be averaged and false
                 %     otherwise. 
+                if nargin < 4
+                    data = obj.data.density;
+                end
                 if nargin < 3
                     filterfunction = @(~)true;
                 end
                 if nargin < 2
                     loopvar = 'i';
                 end
-                averageLoopvar(obj, loopvar, filterfunction);
+                averageLoopvar(obj, loopvar, filterfunction, data);
+        end
+        
+        function outp = filter(obj, sigmaDist, filterWidth, data)
+                % FILTER    Filter the density images based on similarity
+                %     This function implements a filtering of the data based on
+                %     similarity. Basically, it treats each image as an element in
+                %     a N-Dimensional vector space, where N is the number of pixels
+                %     per image. It filters out all images who, after being
+                %     filtered with a gaussian filter of width filterWidth (to get
+                %     rid of shot noise and stuff) are more than sigmaDist sigma
+                %     away from the median distance from the overall center of
+                %     mass. This is basically how simple facial recognicion
+                %     algorithms work and should filter mostly based on images
+                %     having a similar structure.
+                %     By default, the entire density cell array is filtered and
+                %     images that are too far from the COM are replaced with []. If
+                %     you have loopvars which will significantly change the cloud
+                %     shape, you should pass individual parts of the data that you
+                %     expect to look similar to the function as otherwise your data
+                %     will not be filtered properly. 
+                %     The output is returned by this function or, if you have not
+                %     passed custom data to the function, saved in
+                %     pauliObj.data.user.filtered
+                outp = filterImages(obj, sigmaDist, filterWidth, data);
+        end
+        
+        function filterAndAverage(obj)
+                % FILTERANDAVERAGE     Simple quick filtering and averaging
+                %      This function runs the filtering function with
+                %      default parameters on the density object and then
+                %      runs the averaging function over it. Just a quick
+                %      shortcut, no parameters. 
+                outp = filterImages(obj, 2, 5, obj.data.density);
+                obj.data.averaged = averageLoopvar(obj, 'i', @(~)true, outp);
         end
     end
 end

@@ -1,0 +1,99 @@
+function outp = filterImages(pauliObj, sigmaDist, filterWidth, data)
+    % FILTERIMAGES    Filter the density images based on similarity
+        %     This function implements a filtering of the data based on
+        %     similarity. Basically, it treats each image as an element in
+        %     a N-Dimensional vector space, where N is the number of pixels
+        %     per image. It filters out all images who, after being
+        %     filtered with a gaussian filter of width filterWidth (to get
+        %     rid of shot noise and stuff) are more than sigmaDist sigma
+        %     away from the median distance from the overall center of
+        %     mass. This is basically how simple facial recognicion
+        %     algorithms work and should filter mostly based on images
+        %     having a similar structure.
+        %     By default, the entire density cell array is filtered and
+        %     images that are too far from the COM are replaced with []. If
+        %     you have loopvars which will significantly change the cloud
+        %     shape, you should pass individual parts of the data that you
+        %     expect to look similar to the function as otherwise your data
+        %     will not be filtered properly. 
+        %     The output is returned by this function or, if you have not
+        %     passed custom data to the function, saved in
+        %     pauliObj.data.user.filtered
+    if nargin < 4
+        data = pauliObj.data.density;
+    end
+    if nargin < 3
+        filterWidth = 5;
+    end
+    if nargin < 2
+        sigmaDist = 2;
+    end
+
+    % Make Data Structures
+    if numel(size(data)) > 1
+        sizes = size(data);
+        vectorized = reshape(data,[],1);
+    else
+        vectorized = data;
+    end
+    distances = zeros(numel(vectorized),1);
+    selectVec = zeros(numel(vectorized),1);
+
+    % Get average vector and filter it
+    dd = zeros(size(data{1}));
+    dc = 0;
+    for i=1:numel(vectorized)
+        if isempty(vectorized{i})
+            continue;
+        end
+        dd = dd + vectorized{i};
+        dc = dc + 1;
+    end
+    avgMat = imgaussfilt(dd ./ dc, filterWidth);
+    avgVec = avgMat(:);
+
+    % filter and increase distances, get norm
+    for i=1:numel(vectorized)
+        if isempty(vectorized{i})
+            distances(i) = NaN;
+            continue;
+        end
+        dataVec = imgaussfilt(vectorized{i},filterWidth);
+        dataVec = dataVec(:);
+        distVec = dataVec - avgVec;
+        distances(i) = sum(distVec.^2);
+    end
+
+    % Select all images further away that the given confidence interval
+    medDist = median(distances, 'omitnan');
+    stdDist = std(distances, 'omitnan');
+    for i=1:numel(vectorized)
+        if isempty(vectorized{i})
+            continue;
+        end
+        if distances(i) - medDist < sigmaDist*stdDist
+            selectVec(i) = 1;
+        end
+    end
+
+    % Remove all images further away than given confidence interval
+    for i=1:numel(vectorized)
+        if isempty(vectorized{i})
+            continue;
+        end
+        if ~selectVec(i)
+            vectorized{i} = [];
+        end
+    end
+
+    % Reshape back
+    if numel(size(data)) > 1
+        outp = reshape(vectorized, sizes);
+    else
+        outp = vectorized;
+    end
+    
+    % Save to object
+    if nargin < 4
+        pauliObj.data.user.filtered = outp;
+    end

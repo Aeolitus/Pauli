@@ -1,4 +1,4 @@
-function outp = averageLoopvar(pauliObj,loopvar, filterFunction)
+function outp = averageLoopvar(pauliObj,loopvar, filterFunction, data)
     % AVERAGELOOPVAR 	Automatically averages together images 
     %     This function averages together one of the dimensions of the
     %     densities object, so all values of a given loopvar. The loopvar
@@ -7,9 +7,11 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction)
     %     the loopvar). The filterfunction can be a function handle that
     %     is given the image as a double matrix and returns true if the
     %     image should be considered, and false if it should be discarded.
-    
+    if nargin < 4 
+        data = pauliObj.data.density;
+    end
     % If no filterfunction is given, dont filter
-    if nargin == 2
+    if nargin < 3
         filterFunction = @(~)true;
     end
     % If a name is given, get the correct index
@@ -26,14 +28,12 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction)
     end
     
     %% Average together
-    averaged = {};
-    averagedCount = [];
     
     % Move the dimension to average over to the end
     permVec = 1:numel(pauliObj.parameters.loopvars);
     permVec(permVec==loopvar) = [];
     permVec = [permVec loopvar];
-    densTemp = permute(pauliObj.data.density, permVec);
+    densTemp = permute(data, permVec);
     
     % Reshape cell array so that all other dimensions are collapsed into
     % one
@@ -44,7 +44,7 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction)
     % Preallocate array for averaging densities
     avgTemp = cell(mults,1);
     for i=1:mults
-        avgTemp{i} = zeros(size(pauliObj.data.density{1}));
+        avgTemp{i} = zeros(size(data{1}));
     end
     avgC = 0;
     
@@ -68,7 +68,9 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction)
         averaged = squeeze(avgTemp);
     end
     clear avgTemp;
-    pauliObj.data.averaged = averaged;
-    pauliObj.parameters.averagedLoopvar = loopvar;
+    if nargin < 4
+        pauliObj.data.averaged = averaged;
+        pauliObj.parameters.averagedLoopvar = loopvar;
+    end
     outp = averaged;
 end
