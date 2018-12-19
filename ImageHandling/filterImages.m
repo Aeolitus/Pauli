@@ -97,3 +97,49 @@ function outp = filterImages(pauliObj, sigmaDist, filterWidth, data)
     if nargin < 4
         pauliObj.data.user.filtered = outp;
     end
+    
+    % Generate Output Plot
+    if pauliObj.parameters.verbose
+        figure;
+        ax = subplot(2,3,[1 2 4 5]);
+        hold on
+        histogram(distances);
+        ax.YScale = 'log';
+        line([1 1]*medDist+sigmaDist*stdDist, ax.YLim);
+        ax.TickLabelInterpreter = 'latex';
+        ax.XTickLabel = {};
+        xlabel('Distance from average image', 'Interpreter', 'latex');
+        ylabel('Occurances', 'Interpreter', 'latex');
+        title('Analysis of image similarities', 'Interpreter', 'latex');
+        
+        ax = subplot(2,3,3);
+        sumExcl = sum(selectVec == 0);
+        disp(['A total of ' num2str(sumExcl) ' images has been removed by the filter.']);
+        if sumExcl > 0
+            posInd = find(selectVec == 0);
+            imInd = ceil(rand()*sumExcl);
+            imagesc(vectorized{posInd(imInd)});
+            ax.TickLabelInterpreter = 'latex';
+            ax.XTickLabel = {};
+            ax.YTickLabel = {};
+            xlabel('');
+            ylabel('');
+            title('Random filtered example image', 'Interpreter', 'latex');
+            colormap('hot');
+            
+            ax = subplot(2,3,6);
+            if sumExcl > 1
+                imInd = ceil(rand()*sumExcl);
+                imagesc(vectorized{posInd(imInd)});
+                ax.TickLabelInterpreter = 'latex';
+                ax.XTickLabel = {};
+                ax.YTickLabel = {};
+                xlabel('');
+                ylabel('');
+                title('Random filtered example image', 'Interpreter', 'latex');
+                colormap('hot');
+            end
+        end
+        set(gcf, 'Color', 'w');
+        %sgtitle('Summary of the Filtering process', 'Interpreter', 'latex');
+    end

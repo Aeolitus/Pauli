@@ -7,8 +7,8 @@ pauliObj.parameters.crop = [0 0 0 0];
 
 % Set Parameters related to the current state of the setup
 pauliObj.parameters.user.NA = 0.61;
-pauliObj.parameters.user.Magnification = 14.6;
-pauliObj.parameters.user.Csat = 2.62*31.58;
+pauliObj.parameters.user.Magnification = 14.76;
+pauliObj.parameters.user.Csat = 40;
 pauliObj.parameters.user.PixelSize = 16e-6;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;

@@ -30,10 +30,19 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction, data)
     %% Average together
     
     % Move the dimension to average over to the end
-    permVec = 1:numel(pauliObj.parameters.loopvars);
-    permVec(permVec==loopvar) = [];
-    permVec = [permVec loopvar];
-    densTemp = permute(data, permVec);
+    if numel(pauliObj.parameters.loopvars) > 1
+        permVec = 1:numel(pauliObj.parameters.loopvars);
+        permVec(permVec==loopvar) = [];
+        permVec = [permVec loopvar];
+        densTemp = permute(data, permVec);
+    else
+        if numel(pauliObj.parameters.loopvars) == 1
+            densTemp = data;
+        else
+            error('You cannot average together a file without loopvars.');
+        end
+    end
+        
     
     % Reshape cell array so that all other dimensions are collapsed into
     % one
@@ -68,9 +77,9 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction, data)
         averaged = squeeze(avgTemp);
     end
     clear avgTemp;
-    if nargin < 4
+%     if nargin < 4
         pauliObj.data.averaged = averaged;
         pauliObj.parameters.averagedLoopvar = loopvar;
-    end
+%     end
     outp = averaged;
 end

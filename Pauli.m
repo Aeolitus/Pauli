@@ -226,6 +226,15 @@ classdef Pauli < handle
                 %     The output is returned by this function or, if you have not
                 %     passed custom data to the function, saved in
                 %     pauliObj.data.user.filtered
+                if nargin < 4
+                    data = obj.data.density;
+                end
+                if nargin < 3
+                    filterWidth = 5;
+                end
+                if nargin < 2
+                    sigmaDist = 2;
+                end
                 outp = filterImages(obj, sigmaDist, filterWidth, data);
         end
         
