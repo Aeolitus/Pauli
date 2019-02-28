@@ -33,6 +33,7 @@ function outp = filterImages(pauliObj, sigmaDist, filterWidth, data)
     if numel(size(data)) > 1
         sizes = size(data);
         vectorized = reshape(data,[],1);
+        cpVectorized = vectorized;
     else
         vectorized = data;
     end
@@ -63,16 +64,36 @@ function outp = filterImages(pauliObj, sigmaDist, filterWidth, data)
         distVec = dataVec - avgVec;
         distances(i) = sum(distVec.^2);
     end
-
-    % Select all images further away that the given confidence interval
-    medDist = median(distances, 'omitnan');
-    stdDist = std(distances, 'omitnan');
-    for i=1:numel(vectorized)
-        if isempty(vectorized{i})
-            continue;
-        end
-        if distances(i) - medDist < sigmaDist*stdDist
-            selectVec(i) = 1;
+    
+    % Try to autodetect interval
+    cutOff = NaN;
+    if isfield(pauliObj.parameters.user,'Autofilter') && pauliObj.parameters.user.Autofilter
+        [N, edges] = histcounts(distances);
+        [pks, loc] = findpeaks(smooth(1./N,3), edges(1:end-1));
+        loc(isinf(pks)) = [];
+        if numel(loc) > 0
+            cutOff = loc(1);
+            for i=1:numel(vectorized)
+                if isempty(vectorized{i})
+                    continue;
+                end
+                if distances(i) < cutOff
+                    selectVec(i) = 1;
+                end
+            end
+        end 
+    end
+    if isnan(cutOff )
+        % Select all images further away that the given confidence interval
+        medDist = median(distances, 'omitnan');
+        stdDist = std(distances, 'omitnan');
+        for i=1:numel(vectorized)
+            if isempty(vectorized{i})
+                continue;
+            end
+            if distances(i) - medDist < sigmaDist*stdDist
+                selectVec(i) = 1;
+            end
         end
     end
 
@@ -104,8 +125,18 @@ function outp = filterImages(pauliObj, sigmaDist, filterWidth, data)
         ax = subplot(2,3,[1 2 4 5]);
         hold on
         histogram(distances);
-        ax.YScale = 'log';
-        line([1 1]*medDist+sigmaDist*stdDist, ax.YLim);
+        ax.Box = 'on';
+%         ax.YScale = 'log';
+        if isnan(cutOff)
+            line([1 1]*medDist+sigmaDist*stdDist, ax.YLim);
+        else
+            line([1 1]*cutOff, ax.YLim, 'Color', 'r');
+            xx = ax.XLim();
+            xx(1) = cutOff;
+            xx = [xx, fliplr(xx)];
+            yy = [ax.YLim(1) ax.YLim(1) ax.YLim(2) ax.YLim(2)];
+            fill(xx,yy,'r','FaceAlpha',0.2, 'EdgeColor', 'none');
+        end
         ax.TickLabelInterpreter = 'latex';
         ax.XTickLabel = {};
         xlabel('Distance from average image', 'Interpreter', 'latex');
@@ -118,28 +149,27 @@ function outp = filterImages(pauliObj, sigmaDist, filterWidth, data)
         if sumExcl > 0
             posInd = find(selectVec == 0);
             imInd = ceil(rand()*sumExcl);
-            imagesc(vectorized{posInd(imInd)});
+            imagesc(cpVectorized{posInd(imInd)});
             ax.TickLabelInterpreter = 'latex';
             ax.XTickLabel = {};
             ax.YTickLabel = {};
             xlabel('');
             ylabel('');
-            title('Random filtered example image', 'Interpreter', 'latex');
-            colormap('hot');
+            title('Random rejected image', 'Interpreter', 'latex');
             
             ax = subplot(2,3,6);
             if sumExcl > 1
-                imInd = ceil(rand()*sumExcl);
-                imagesc(vectorized{posInd(imInd)});
+                posInd = find(selectVec ~= 0);
+                imInd = ceil(rand()*numel(posInd));
+                imagesc(cpVectorized{posInd(imInd)});
                 ax.TickLabelInterpreter = 'latex';
                 ax.XTickLabel = {};
                 ax.YTickLabel = {};
                 xlabel('');
                 ylabel('');
-                title('Random filtered example image', 'Interpreter', 'latex');
-                colormap('hot');
+                title('Random accepted image', 'Interpreter', 'latex');
             end
         end
         set(gcf, 'Color', 'w');
-        %sgtitle('Summary of the Filtering process', 'Interpreter', 'latex');
+        sgtitle('Summary of the Filtering process', 'Interpreter', 'latex');
     end

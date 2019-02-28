@@ -14,8 +14,8 @@ function density_image =                                                ...
     %% Extract useful values from XML
     % This is done via regexp, because converting the string to something
     % useful takes a lot of time that we dont want to spend.
-    if ~isfield(pauliObj.parameters.user,'ImgIlluminationTime') ||      ...
-            isnan(pauliObj.parameters.user.ImgIlluminationTime)
+%     if ~isfield(pauliObj.parameters.user,'ImgIlluminationTime') ||      ...
+%             isnan(pauliObj.parameters.user.ImgIlluminationTime)
         
         binx = NaN;
         biny = NaN;
@@ -78,7 +78,7 @@ function density_image =                                                ...
                 FB_I_Img*pauliObj.parameters.user.GperA +               ...
                 HH_I_Img*pauliObj.parameters.user.GperA/1.5367;
         end
-    end
+%     end
     
     
     %% Code taken from QMLi.prepareImages.convertToDensity
@@ -105,6 +105,7 @@ function density_image =                                                ...
         beta = 1-a*exp(-((pauliObj.parameters.user.imagingfield/        ...
             pauliObj.parameters.user.GperA-b0)/t)^4);
     end
+    beta = 1;
     
     % Subtract Dark Images
     Bright = imagesStruct.BrightM - imagesStruct.BrightDarkM;
@@ -120,16 +121,16 @@ function density_image =                                                ...
     
     % Create Linear Term
     LinTerm = Bright - Atoms;
-    LinTerm = LinTerm / pauliObj.constants.user.sigma / beta / (1 - SA);
-    LinTerm = LinTerm / (pauliObj.parameters.user.Csat/4);
-    LinTerm = LinTerm / (pauliObj.parameters.user.Binning^2);
-    LinTerm = LinTerm / pauliObj.parameters.user.ImgIlluminationTime / 1e6; 
+    LinTerm = LinTerm / (pauliObj.parameters.user.Csat * ...
+        pauliObj.parameters.user.Binning^2 * ...
+        pauliObj.parameters.user.ImgIlluminationTime * 1e6);
     
     % Create Logarithmic Term
     LogTerm = log(Atoms ./ Bright);
-    LogTerm = LogTerm / pauliObj.constants.user.sigma / beta / (1 - SA);
     
-    density_image = LinTerm - LogTerm;
+    LinLog = LinTerm - LogTerm;
+    
+    density_image = LinLog /pauliObj.constants.user.sigma /beta /(1 - SA);
     
     if pauliObj.parameters.user.dirtyHack
         density_image(isnan(density_image)) = 0;

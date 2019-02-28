@@ -14,6 +14,10 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction, data)
     if nargin < 3
         filterFunction = @(~)true;
     end
+    % If no input loopvar is given, assume "i"
+    if nargin < 2
+        loopvar = 'i';
+    end
     % If a name is given, get the correct index
     if ~isnumeric(loopvar)
         for i=1:numel(pauliObj.parameters.loopvars)
