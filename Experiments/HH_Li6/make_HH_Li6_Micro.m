@@ -2,7 +2,10 @@ pauliObj = Pauli;
 
 % Set parameters for this camera (Micro)
 pauliObj.parameters.verbose = 1;
-pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM'};
+pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM', 'DMD2'};
+pauliObj.parameters.imagesToSave = {'DMD2'};
+pauliObj.parameters.user.DMDFlashLowerThresh = 700000;
+pauliObj.parameters.user.DMDFlashUpperThresh = 1400000;
 pauliObj.parameters.crop = [0 0 0 0];
 
 % Set Parameters related to the current state of the setup

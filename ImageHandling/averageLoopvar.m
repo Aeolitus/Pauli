@@ -56,8 +56,19 @@ function outp = averageLoopvar(pauliObj,loopvar, filterFunction, data)
     
     % Preallocate array for averaging densities
     avgTemp = cell(mults,1);
+    siz = [];
+    for i=1:numel(data)
+        if ~isempty(data{i})
+            siz = size(data{i});
+            break;
+        end
+    end
+    if isempty(siz)
+        error('You dont seem to have any data?');
+    end
     for i=1:mults
-        avgTemp{i} = zeros(size(data{1}));
+        avgTemp{i} = zeros(siz);
+        
     end
     avgC = 0;
     

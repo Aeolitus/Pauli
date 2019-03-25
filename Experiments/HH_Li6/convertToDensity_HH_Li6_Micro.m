@@ -132,6 +132,16 @@ function density_image =                                                ...
     
     density_image = LinLog /pauliObj.constants.user.sigma /beta /(1 - SA);
     
+    if isfield(imagesStruct, 'DMD2')
+        dmdImg = imagesStruct.DMD2;
+        if sum(sum(dmdImg)) < pauliObj.parameters.user.DMDFlashLowerThresh
+            density_image = [];
+        end
+        if sum(sum(dmdImg)) > pauliObj.parameters.user.DMDFlashUpperThresh
+            density_image = [];
+        end
+    end
+    
     if pauliObj.parameters.user.dirtyHack
         density_image(isnan(density_image)) = 0;
         density_image(isinf(density_image)) = 0;
