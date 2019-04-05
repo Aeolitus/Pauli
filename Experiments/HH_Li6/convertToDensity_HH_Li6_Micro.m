@@ -95,17 +95,13 @@ function density_image =                                                ...
     SA = 2*pi*(1-cos(theta))/(4*pi);
     
     % Calculate beta factor for BEC side fields
-    if pauliObj.parameters.user.imagingfield < 690
+    if pauliObj.parameters.user.imagingfield < 660 || pauliObj.parameters.user.imagingfield > 105
         beta = 1;
     else
-        % beta according to lennarts evaluation done on 20170112
-        a = 0.777;
-        b0 = 52.38;
-        t = 41.86;
-        beta = 1-a*exp(-((pauliObj.parameters.user.imagingfield/        ...
-            pauliObj.parameters.user.GperA-b0)/t)^4);
+        % beta according to lennarts evaluation done on 20190405
+        f = pauliObj.parameters.user.imagingfield / pauliObj.parameters.user.GperA;
+        beta = min(-0.0004378*f^2+0.09242*f-3.866,1);
     end
-    beta = 1;
     
     % Subtract Dark Images
     Bright = imagesStruct.BrightM - imagesStruct.BrightDarkM;
@@ -133,12 +129,19 @@ function density_image =                                                ...
     density_image = LinLog /pauliObj.constants.user.sigma /beta /(1 - SA);
     
     if isfield(imagesStruct, 'DMD2')
-        dmdImg = imagesStruct.DMD2;
-        if sum(sum(dmdImg)) < pauliObj.parameters.user.DMDFlashLowerThresh
-            density_image = [];
-        end
-        if sum(sum(dmdImg)) > pauliObj.parameters.user.DMDFlashUpperThresh
-            density_image = [];
+        if pauliObj.parameters.user.DMDFilter
+            dmdImg = imagesStruct.DMD2(pauliObj.parameters.user.DMDTop: ...
+                pauliObj.parameters.user.DMDBot, ...
+                pauliObj.parameters.user.DMDLeft: ...
+                pauliObj.parameters.user.DMDRight);
+            fullSum = sum(sum(dmdImg));
+            if fullSum < pauliObj.parameters.user.DMDFlashLowerThresh
+                density_image = [];
+            end
+            if fullSum > pauliObj.parameters.user.DMDFlashUpperThresh
+                density_image = [];
+            end
+            pauliObj.data.user.dmdsums{end+1} = fullSum;
         end
     end
     

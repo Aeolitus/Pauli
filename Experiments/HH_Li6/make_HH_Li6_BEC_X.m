@@ -15,6 +15,7 @@ pauliObj.parameters.verbose = 1;
 % Shot Names to load from file system
 pauliObj.parameters.imagesToLoad = {'AtomsBECX', 'BrightBECX', 'DarkBECX'}; 
 % Shot Names to keep after converting to density
+pauliObj.parameters.imagesToCrop = pauliObj.parameters.imagesToLoad;
 pauliObj.parameters.imagesToSave = {};
 % How many pixels to crop from the images [Left, Right, Top, Bottom]
 pauliObj.parameters.crop = [0 0 0 0];

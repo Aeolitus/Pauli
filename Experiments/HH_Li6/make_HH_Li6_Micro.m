@@ -3,10 +3,20 @@ pauliObj = Pauli;
 % Set parameters for this camera (Micro)
 pauliObj.parameters.verbose = 1;
 pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM', 'DMD2'};
-pauliObj.parameters.imagesToSave = {'DMD2'};
-pauliObj.parameters.user.DMDFlashLowerThresh = 700000;
-pauliObj.parameters.user.DMDFlashUpperThresh = 1400000;
+pauliObj.parameters.imagesToCrop = pauliObj.parameters.imagesToLoad(1:end-1);
+pauliObj.parameters.imagesToSave = {};
 pauliObj.parameters.crop = [0 0 0 0];
+
+% DMD Flash Filtering
+pauliObj.parameters.user.DMDFilter = false;
+pauliObj.parameters.user.DMDTop = 100;
+pauliObj.parameters.user.DMDBot = 400;
+pauliObj.parameters.user.DMDLeft = 230;
+pauliObj.parameters.user.DMDRight = 380;
+pauliObj.parameters.user.DMDFlashLowerThresh = -Inf;
+pauliObj.parameters.user.DMDFlashUpperThresh = Inf;
+pauliObj.data.user.dmdsums = {};
+pauliObj.data.user.dmdsums = {};
 
 % Set Parameters related to the current state of the setup
 pauliObj.parameters.user.NA = 0.61;

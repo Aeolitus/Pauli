@@ -30,6 +30,9 @@ classdef PauliParameters < handle
         % Cell Array of image names to be saved. All others are discarded.
         imagesToSave = NaN;
         
+        % Cell Array of image names to be cropped. Others are left alone.
+        imagesToCrop = NaN;
+        
         % Array with the amount of pixels to crop. Left, Right, Top, Bottom
         crop = NaN;
         
