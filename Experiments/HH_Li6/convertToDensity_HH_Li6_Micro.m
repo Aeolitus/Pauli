@@ -95,7 +95,7 @@ function density_image =                                                ...
     SA = 2*pi*(1-cos(theta))/(4*pi);
     
     % Calculate beta factor for BEC side fields
-    if pauliObj.parameters.user.imagingfield < 660 || pauliObj.parameters.user.imagingfield > 105
+    if pauliObj.parameters.user.imagingfield < 660 || pauliObj.parameters.user.imagingfield > 823
         beta = 1;
     else
         % beta according to lennarts evaluation done on 20190405
