@@ -244,7 +244,7 @@ classdef Pauli < handle
                 %      default parameters on the density object and then
                 %      runs the averaging function over it. Just a quick
                 %      shortcut, no parameters. 
-                outp = filterImages(obj, 2, 5, obj.data.density);
+                outp = filterImages(obj, 1, 5, obj.data.density);
                 obj.data.averaged = averageLoopvar(obj, 'i', @(~)true, outp);
         end
     end
