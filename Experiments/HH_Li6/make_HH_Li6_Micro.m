@@ -22,7 +22,7 @@ pauliObj.data.user.dmdsums = {};
 % Set Parameters related to the current state of the setup
 pauliObj.parameters.user.NA = 0.61;
 pauliObj.parameters.user.Magnification = 14.76;
-pauliObj.parameters.user.Csat = 210;
+pauliObj.parameters.user.Csat = 71;
 pauliObj.parameters.user.PixelSize = 16e-6;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;
