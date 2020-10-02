@@ -36,7 +36,7 @@ function outp = autoDetect(PauliP, foldername)
     for numberofVariables = floor(length(find(folderContent{1}=='_'))/2):-1:0
         rE = ['(?:[a-zA-Z]+)' ...
             repmat('_([a-zA-Z][0-9a-zA-Z_]*?)_(?:[0-9eE.-]+)',1,numberofVariables) ...
-            '(?:_[0-9]+){0,1}.png'];
+            '.png']; %(?:_[0-9]+){0,1}
         regexpOut = regexp(folderContent{1}, rE,'tokens');
         if ~isempty(regexpOut) 
             break;

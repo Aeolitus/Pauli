@@ -13,7 +13,7 @@ classdef Pauli < handle
         data;
     end
     methods
-        function obj = Pauli(configfile, folderpath)
+        function obj = Pauli(configfile, folderpath, flag)
             % Pauli    Constructor creating the pauli object and subobjects
             %     When called without an argument, creates an empty pauli
             %     object. When a .pauli file is passed, the entire object 
@@ -55,15 +55,19 @@ classdef Pauli < handle
                         % evaluation was already done. Prompt the user if
                         % the old evaluation should be loaded or if a new
                         % one should be run
-                        choice = questdlg(['This folder was already evaluated. ' ...
-                            'Would you like to load the old evaluation or to redo it?'], ...
-                            'Pauli-Savefile found', 'Load Old Evaluation', ...
-                            'Perform New Evaluation','Load Old Evaluation');
-                        switch choice
-                            case 'Load Old Evaluation'
-                                loadF = fullfile(folderpath, 'savedPauliState.pauli');
-                            case 'Perform New Evaluation'
-                                analyze = folderpath;
+                        if nargin > 2 && flag
+                            loadF = fullfile(folderpath, 'savedPauliState.pauli');
+                        else
+                            choice = questdlg(['This folder was already evaluated. ' ...
+                                'Would you like to load the old evaluation or to redo it?'], ...
+                                'Pauli-Savefile found', 'Load Old Evaluation', ...
+                                'Perform New Evaluation','Load Old Evaluation');
+                            switch choice
+                                case 'Load Old Evaluation'
+                                    loadF = fullfile(folderpath, 'savedPauliState.pauli');
+                                case 'Perform New Evaluation'
+                                    analyze = folderpath;
+                            end
                         end
                     else
                         % This folder has not been evaluated before. Do it.

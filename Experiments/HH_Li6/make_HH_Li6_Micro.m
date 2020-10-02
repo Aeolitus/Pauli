@@ -2,10 +2,10 @@ pauliObj = Pauli;
 
 % Set parameters for this camera (Micro)
 pauliObj.parameters.verbose = 1;
-pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM', 'DMD2'};
-% pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM'};
-pauliObj.parameters.imagesToCrop = pauliObj.parameters.imagesToLoad(1:end-1);
-% pauliObj.parameters.imagesToCrop = pauliObj.parameters.imagesToLoad(1:end);
+% pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM', 'DMD2'};
+pauliObj.parameters.imagesToLoad = {'AtomsM', 'AtomsDarkM', 'BrightM', 'BrightDarkM'};
+% pauliObj.parameters.imagesToCrop = pauliObj.parameters.imagesToLoad(1:end-1);
+pauliObj.parameters.imagesToCrop = pauliObj.parameters.imagesToLoad(1:end);
 pauliObj.parameters.imagesToSave = {};
 pauliObj.parameters.crop = [0 0 0 0];
 
@@ -22,7 +22,7 @@ pauliObj.data.user.dmdsums = {};
 % Set Parameters related to the current state of the setup
 pauliObj.parameters.user.NA = 0.61;
 pauliObj.parameters.user.Magnification = 14.76;
-pauliObj.parameters.user.Csat = 71;
+pauliObj.parameters.user.Csat = 57; % 20200818, see Labbook 20201001
 pauliObj.parameters.user.PixelSize = 16e-6;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;

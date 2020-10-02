@@ -9,7 +9,6 @@ function loadDensities(pauliObj, loadOnlyNew)
         loadOnlyNew = 0;
     end
     
-    
     if pauliObj.parameters.verbose == true
         textprogressbar('RESET',1);
     end

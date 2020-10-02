@@ -5,6 +5,7 @@ classdef PauliConst < handle
     properties(Constant)
         a0 = 5.29177e-11;                   % Bohr radius
         hbar = 1.054571726e-34;             % Reduced Planck constant
+        h = 2*pi*1.054571726e-34;
         U = 1.660538921e-27;                % Atomic mass
         kb = 1.3806488e-23;                 % Boltzmann constant
         c = 2.99792458e8;                   % Speed of light
