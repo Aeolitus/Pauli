@@ -20,8 +20,8 @@ function density_image =                                                ...
         binx = NaN;
         biny = NaN;
         imgIlluminationTime = NaN;
-        FB_I_Img = NaN;
-        HH_I_Img = NaN;
+        FB_Img = NaN;
+        HH_Img = NaN;
         High_Curvature_Q = NaN;
 
         match = regexp(XmlStr,['<camera type="Ixon">(?:.*)<binx>'       ...
@@ -42,16 +42,16 @@ function density_image =                                                ...
             imgIlluminationTime = str2double(match{1});
         end
         
-        match = regexp(XmlStr,['<name>FB_I_Img</name>'                  ...
+        match = regexp(XmlStr,['<name>FB_Img</name>'                  ...
             '(?:\s*)<value>([0-9eE.-]+)</value>'],'tokens','once');
         if ~isempty(match)
-            FB_I_Img = str2double(match{1});
+            FB_Img = str2double(match{1});
         end
         
-        match = regexp(XmlStr,['<name>HH_I_Img</name>'                  ...
+        match = regexp(XmlStr,['<name>HH_Img</name>'                  ...
             '(?:\s*)<value>([0-9eE.-]+)</value>'],'tokens','once');
         if ~isempty(match)
-            HH_I_Img = str2double(match{1});
+            HH_Img = str2double(match{1});
         end
         
         match = regexp(XmlStr,['<name>High_Curvature_Q</name>'          ...
@@ -71,12 +71,10 @@ function density_image =                                                ...
 
         if ~isnan(High_Curvature_Q) && High_Curvature_Q
             pauliObj.parameters.user.imagingfield =                     ...
-                FB_I_Img*pauliObj.parameters.user.GperA -               ...
-                HH_I_Img*pauliObj.parameters.user.GperA/1.5367;
+                FB_Img - HH_Img;
         else
             pauliObj.parameters.user.imagingfield =                     ...
-                FB_I_Img*pauliObj.parameters.user.GperA +               ...
-                HH_I_Img*pauliObj.parameters.user.GperA/1.5367;
+                FB_Img + HH_Img;
         end
 %     end
     
@@ -99,11 +97,13 @@ function density_image =                                                ...
         beta = 1;
     else
         % beta according to lennarts evaluation done on 20190405
-        f = pauliObj.parameters.user.imagingfield / pauliObj.parameters.user.GperA;
+%         f = pauliObj.parameters.user.imagingfield / pauliObj.parameters.user.GperA; % old GperA=7.8444
+        f = pauliObj.parameters.user.imagingfield / 7.8444; % conversion from Gauss to old currents, old GperA=7.8444
         beta = min(-0.0004378*f^2+0.09242*f-3.866,1);
     end
     
     % Subtract Dark Images
+    
     Bright = imagesStruct.BrightM - imagesStruct.BrightDarkM;
     Atoms = imagesStruct.AtomsM - imagesStruct.AtomsDarkM;
     
@@ -143,6 +143,19 @@ function density_image =                                                ...
             end
             pauliObj.data.user.dmdsums{end+1} = fullSum;
         end
+    end
+    
+    if isfield(pauliObj.parameters.user,'counts_low_threshold') ...
+            && isfield(pauliObj.parameters.user,'counts_high_threshold')
+        bright_sum = sum(Bright,'all');
+        atoms_sum = sum(Atoms,'all');
+        low_thr = pauliObj.parameters.user.counts_low_threshold;
+        high_thr = pauliObj.parameters.user.counts_high_threshold;
+        if bright_sum < low_thr || bright_sum > high_thr || atoms_sum < low_thr || atoms_sum > high_thr
+            density_image = [];
+        end
+        pauliObj.data.user.AtomsSums{end+1} = atoms_sum;
+        pauliObj.data.user.BrightSums{end+1} = bright_sum;
     end
     
     if pauliObj.parameters.user.dirtyHack

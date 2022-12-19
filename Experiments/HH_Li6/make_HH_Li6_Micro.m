@@ -26,8 +26,10 @@ pauliObj.parameters.user.Csat = 69; % 20221004
 pauliObj.parameters.user.PixelSize = 16e-6;
 pauliObj.parameters.user.EffectivePixelSize = pauliObj.parameters.      ...
     user.PixelSize / pauliObj.parameters.user.Magnification;
-pauliObj.parameters.user.GperA = 7.8444;
+% pauliObj.parameters.user.GperA = 7.8444; new: FB_Img in units of G
 pauliObj.parameters.user.dirtyHack = 1;
+pauliObj.data.user.AtomsSums = {};
+pauliObj.data.user.BrightSums = {};
 
 % Set constants for this atomic species (Li6)
 pauliObj.constants.user.m = 9.9883e-27; %kg

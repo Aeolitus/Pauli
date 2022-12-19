@@ -103,7 +103,7 @@ classdef Pauli < handle
             end     
         end % End Constructor
         
-        function saveConfig(PauliObject, filename)    %#ok<INUSL>
+        function saveConfig(PauliObject, filename)
             % saveConfig    This method saves the object to a file
             %    Creates a *.pauli file containing this object to be used
             %    as a starting point for later evaluations.
