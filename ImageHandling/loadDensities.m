@@ -67,14 +67,18 @@ function loadDensities(pauliObj, loadOnlyNew)
         % Create the loop variable part of the filename and the cell index
         variableStr = '';
         cellIndex = '';
-        for i=1:numel(pauliObj.parameters.loopvars)
+        % Assemble file name using the loopvars in their original order
+        for i=pauliObj.parameters.filenameLoopvarsOrder
             variableStr = [variableStr '_' pauliObj.parameters.         ...
                 loopvars{i}.name '_' pauliObj.parameters.               ...
                 loopvars{i}.value()];
+        end
+        variableStr = [variableStr '.png'];
+        % Assemble cell index
+        for i=1:numel(pauliObj.parameters.loopvars)
             cellIndex = [cellIndex num2str(pauliObj.parameters.         ...
                 loopvars{i}.currentIndex) ','];
         end
-        variableStr = [variableStr '.png'];
         cellIndex = cellIndex(1:end-1); % Remove last comma
         
         if ~loadOnlyNew || eval(['isempty(pauliObj.data.density{' cellIndex '})'])

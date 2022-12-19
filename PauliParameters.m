@@ -14,6 +14,9 @@ classdef PauliParameters < handle
         
         % Cell Array of PauliLoopvars
         loopvars = NaN;
+
+        % Array of loopvar indices in original script and filename order
+        filenameLoopvarsOrder = NaN;
         
         % Cell Array of filenames to use
         files = NaN;

@@ -124,6 +124,7 @@ function outp = autoDetect(PauliP, foldername)
     PauliP.files = filesList;
     PauliP.images = images;
     PauliP.loopvars = loopvars;
+    PauliP.filenameLoopvarsOrder = 1:numel(loopvars);
 
     % If the user wants the object as a return, he shall get it.
     if nargout > 0
