@@ -58,10 +58,13 @@ classdef Pauli < handle
                         if nargin > 2 && flag
                             loadF = fullfile(folderpath, 'savedPauliState.pauli');
                         else
+                            defaultfigureunits = get(0,'defaultfigureunits');
+                            set(0,'defaultfigureunits','pixel')
                             choice = questdlg(['This folder was already evaluated. ' ...
                                 'Would you like to load the old evaluation or to redo it?'], ...
                                 'Pauli-Savefile found', 'Load Old Evaluation', ...
                                 'Perform New Evaluation','Load Old Evaluation');
+                            set(0,'defaultfigureunits',defaultfigureunits)
                             switch choice
                                 case 'Load Old Evaluation'
                                     loadF = fullfile(folderpath, 'savedPauliState.pauli');
@@ -130,11 +133,14 @@ classdef Pauli < handle
             combined = fullfile(path,file);
             if exist(combined, 'file') == 2
                 % A file would be overwritten! Ask what to do
+                defaultfigureunits = get(0,'defaultfigureunits');
+                set(0,'defaultfigureunits','pixel')
                 choice = questdlg(['A saved Pauli Object already exists! '...
                     'Would you like to overwrite it, rename the old one, or ' ...
                     'save this one under a different name?'], ...
                             'Pauli-Savefile already exists', 'Overwrite', ...
                             'Rename old','Save under a different name', 'Rename old');
+                set(0,'defaultfigureunits',defaultfigureunits)
                 switch choice
                     case 'Overwrite'
                         % Overwrite away
